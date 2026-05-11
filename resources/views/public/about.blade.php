@@ -2,13 +2,13 @@
 
 @php
     use Carbon\Carbon;
+    use Illuminate\Support\Str;
 
     $photoPath = $about->photo ?? null;
-
     if ($photoPath) {
-        if (\Illuminate\Support\Str::startsWith($photoPath, ['http://', 'https://'])) {
+        if (Str::startsWith($photoPath, ['http://', 'https://'])) {
             $photoUrl = $photoPath;
-        } elseif (\Illuminate\Support\Str::startsWith($photoPath, ['storage/', 'images/', 'uploads/'])) {
+        } elseif (Str::startsWith($photoPath, ['storage/', 'images/', 'uploads/'])) {
             $photoUrl = asset($photoPath);
         } else {
             $photoUrl = asset('storage/' . ltrim($photoPath, '/'));
@@ -18,45 +18,49 @@
     }
 @endphp
 
-@section('title', 'About | Portfolio')
+@section('title', 'About — ' . ($about->name ?? 'Portfolio'))
 
 @section('content')
-<section class="mx-auto max-w-7xl px-6 py-16 lg:px-8 lg:py-20">
-    <div class="grid gap-8 lg:grid-cols-[1.08fr_0.92fr] lg:items-start">
+
+{{-- ═══════════════════════════════════════════════════
+     HERO INTRO
+═══════════════════════════════════════════════════ --}}
+<section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 pb-12">
+
+    {{-- Breadcrumb --}}
+    <div class="flex items-center gap-2 text-xs text-slate-600 mb-12">
+        <a href="{{ route('home') }}" class="hover:text-slate-400 transition-colors">Home</a>
+        <span>/</span>
+        <span class="text-slate-400">About</span>
+    </div>
+
+    <div class="grid gap-16 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
 
         {{-- LEFT --}}
-        <div class="max-w-3xl">
-            <span class="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.35em] text-slate-300">
-                About
-            </span>
+        <div>
+            <p class="text-xs font-semibold uppercase tracking-widest text-cyan-500 mb-4">About Me</p>
 
-            <div class="mt-6 flex flex-col gap-5 sm:flex-row sm:items-center">
+            {{-- Name + photo --}}
+            <div class="flex flex-col gap-6 sm:flex-row sm:items-center mb-8">
                 @if ($photoUrl)
-                    <div class="shrink-0">
-                        <img
-                            src="{{ $photoUrl }}"
-                            alt="{{ $about->name ?? 'Profile Photo' }}"
-                            class="h-28 w-28 rounded-[1.5rem] border border-white/10 object-cover shadow-xl sm:h-32 sm:w-32"
-                        >
+                    <div class="shrink-0 relative">
+                        <div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-cyan-500/30 to-violet-500/20 blur-xl"></div>
+                        <img src="{{ $photoUrl }}"
+                             alt="{{ $about->name ?? 'Profile Photo' }}"
+                             class="relative h-24 w-24 rounded-2xl border border-white/15 object-cover shadow-2xl sm:h-28 sm:w-28">
                     </div>
                 @endif
-
                 <div>
-                    <h1 class="text-5xl font-semibold tracking-tight text-white lg:text-6xl">
+                    <h1 class="font-display text-4xl font-bold tracking-tight text-white sm:text-5xl">
                         {{ $about->name ?? 'Muhamad Ariel Saputra' }}
                     </h1>
-
-                    <p class="mt-4 max-w-2xl text-xl leading-8 text-slate-300">
-                        {{ $about->headline ?? 'IT Support & Web Developer yang berfokus pada pengelolaan sistem, jaringan, dan pengembangan aplikasi berbasis Laravel.' }}
-                    </p>
+                    <p class="mt-2 text-slate-400">{{ $about->headline ?? 'IT Support & Laravel Developer' }}</p>
                 </div>
             </div>
 
-            <div class="mt-8 max-w-2xl space-y-5 text-base leading-8 text-slate-400">
-                @php
-                    $bio = $about->full_bio ?? $about->short_bio ?? null;
-                @endphp
-
+            {{-- Bio --}}
+            <div class="prose prose-invert prose-slate max-w-none space-y-4 text-slate-400 leading-8">
+                @php $bio = $about->full_bio ?? $about->short_bio ?? null; @endphp
                 @if ($bio)
                     @foreach (preg_split("/\r\n|\n|\r/", trim($bio)) as $paragraph)
                         @if (trim($paragraph) !== '')
@@ -64,248 +68,197 @@
                         @endif
                     @endforeach
                 @else
-                    <p>
-                        Saya memiliki pengalaman dalam IT Support dan Web Development, terbiasa menangani troubleshooting hardware, software, serta jaringan LAN/WAN.
-                    </p>
-                    <p>
-                        Selain itu, saya juga berpengalaman dalam membangun dan melakukan deployment aplikasi web menggunakan Laravel di lingkungan server Linux.
-                    </p>
-                    <p>
-                        Saat ini saya terbuka untuk peluang kerja di bidang IT Support maupun Web Development, dan siap berkontribusi dengan pendekatan yang terstruktur dan problem-solving oriented.
-                    </p>
+                    <p>Saya memiliki pengalaman dalam IT Support dan Web Development, terbiasa menangani troubleshooting hardware, software, serta jaringan LAN/WAN.</p>
+                    <p>Selain itu, saya juga berpengalaman dalam membangun dan men-deploy aplikasi web menggunakan Laravel di lingkungan server Linux.</p>
+                    <p>Saya terbuka untuk peluang kerja di bidang IT Support maupun Web Development, dan siap berkontribusi dengan pendekatan yang terstruktur dan problem-solving oriented.</p>
                 @endif
             </div>
 
-            <div class="mt-10 grid gap-4 sm:grid-cols-2 sm:max-w-2xl">
-                <div class="rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur">
-                    <p class="text-xs uppercase tracking-[0.3em] text-slate-500">Email</p>
-                    <p class="mt-3 break-all text-sm text-white sm:text-base">
-                        {{ $about->email ?? 'muhamadarielsaputra11@gmail.com' }}
-                    </p>
+            {{-- Contact info cards --}}
+            <div class="mt-10 grid gap-3 sm:grid-cols-2">
+                <div class="rounded-2xl border border-white/10 bg-white/4 p-5">
+                    <p class="text-[10px] uppercase tracking-widest text-slate-600 mb-2">Email</p>
+                    <p class="text-sm font-medium text-white break-all">{{ $about->email ?? 'muhamadarielsaputra11@gmail.com' }}</p>
                 </div>
-
-                <div class="rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur">
-                    <p class="text-xs uppercase tracking-[0.3em] text-slate-500">Location</p>
-                    <p class="mt-3 text-sm text-white sm:text-base">
-                        {{ $about->location ?? 'Indonesia' }}
-                    </p>
+                <div class="rounded-2xl border border-white/10 bg-white/4 p-5">
+                    <p class="text-[10px] uppercase tracking-widest text-slate-600 mb-2">Location</p>
+                    <p class="text-sm font-medium text-white">{{ $about->location ?? 'Indonesia' }}</p>
                 </div>
             </div>
         </div>
 
-        {{-- RIGHT CARD --}}
-        <div class="lg:sticky lg:top-24">
-            <div class="overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 p-5 shadow-xl backdrop-blur">
-                <div class="rounded-[1.75rem] border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.16),transparent_28%),linear-gradient(135deg,#111827,#020617,#0f172a)] p-7">
-                    <p class="text-xs uppercase tracking-[0.35em] text-slate-500">
-                        Professional Profile
-                    </p>
+        {{-- RIGHT: STICKY PROFILE CARD --}}
+        <div class="lg:sticky lg:top-24 space-y-5">
 
-                    <h2 class="mt-4 max-w-md text-3xl font-semibold leading-tight text-white">
-                        Berfokus pada troubleshooting sistem, pengelolaan jaringan, dan pengembangan aplikasi yang terstruktur.
-                    </h2>
-
-                    <p class="mt-5 max-w-md leading-8 text-slate-300">
-                        Memiliki pengalaman di sisi support, jaringan, dan development untuk membantu kebutuhan operasional berjalan lebih stabil dan efisien.
-                    </p>
-
-                    <div class="mt-8 grid gap-4 sm:grid-cols-2">
-                        <div class="rounded-3xl border border-white/10 bg-white/5 p-5">
-                            <p class="text-xs uppercase tracking-[0.25em] text-slate-500">Experience</p>
-                            <p class="mt-2 text-3xl font-semibold text-white">
-                                {{ $experiences->count() }}
-                            </p>
-                        </div>
-
-                        <div class="rounded-3xl border border-white/10 bg-white/5 p-5">
-                            <p class="text-xs uppercase tracking-[0.25em] text-slate-500">Skills</p>
-                            <p class="mt-2 text-3xl font-semibold text-white">
-                                {{ $skills->count() }}
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="mt-8 flex flex-wrap gap-2 text-xs uppercase tracking-[0.25em] text-slate-400">
-                        <span class="rounded-full border border-white/10 px-3 py-2">IT Support</span>
-                        <span class="rounded-full border border-white/10 px-3 py-2">Laravel</span>
-                        <span class="rounded-full border border-white/10 px-3 py-2">Linux Server</span>
-                        <span class="rounded-full border border-white/10 px-3 py-2">Networking</span>
-                    </div>
+            {{-- Stats --}}
+            <div class="grid grid-cols-2 gap-4">
+                <div class="rounded-2xl border border-white/10 bg-white/4 p-5 text-center">
+                    <p class="font-display text-3xl font-bold text-white">{{ $experiences->count() }}</p>
+                    <p class="mt-1 text-xs text-slate-500 uppercase tracking-widest">Pengalaman</p>
+                </div>
+                <div class="rounded-2xl border border-white/10 bg-white/4 p-5 text-center">
+                    <p class="font-display text-3xl font-bold text-white">{{ $skills->count() }}</p>
+                    <p class="mt-1 text-xs text-slate-500 uppercase tracking-widest">Skills</p>
                 </div>
             </div>
-        </div>
 
-    </div>
-</section>
-
-<section class="mx-auto max-w-7xl px-6 pb-20 lg:px-8">
-    <div class="grid gap-8 lg:grid-cols-[1fr_0.92fr]">
-
-        {{-- EXPERIENCE --}}
-        <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500">
-                Experience
-            </p>
-
-            <div class="mt-6 space-y-5">
-                @forelse ($experiences as $experience)
-                    @php
-                        $startDate = $experience->start_date ? Carbon::parse($experience->start_date)->format('M Y') : null;
-                        $endDate = $experience->end_date ? Carbon::parse($experience->end_date)->format('M Y') : null;
-                    @endphp
-
-                    <div class="rounded-[2rem] border border-white/10 bg-white/5 p-6 backdrop-blur">
-                        <div class="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
-                            <div class="pr-4">
-                                <h3 class="text-2xl font-semibold text-white">
-                                    {{ $experience->position }}
-                                </h3>
-
-                                <p class="mt-2 text-sm uppercase tracking-[0.25em] text-slate-500">
-                                    {{ $experience->company }}
-                                </p>
-                            </div>
-
-                            <p class="shrink-0 text-sm text-slate-400">
-                                {{ $startDate ?? '-' }}{{ $endDate ? ' — '.$endDate : ' — Present' }}
-                            </p>
+            {{-- Highlight card --}}
+            <div class="rounded-2xl border border-white/10 bg-gradient-to-br from-cyan-500/8 via-violet-500/5 to-transparent p-6">
+                <p class="text-xs uppercase tracking-widest text-slate-500 mb-4">Core Strengths</p>
+                <div class="space-y-3">
+                    @foreach(['IT Support & Troubleshooting', 'Laravel Web Development', 'Linux Server Management', 'LAN/WAN Networking', 'Database MySQL', 'System Documentation'] as $strength)
+                        <div class="flex items-center gap-3">
+                            <div class="h-1.5 w-1.5 rounded-full bg-cyan-400 shrink-0"></div>
+                            <span class="text-sm text-slate-300">{{ $strength }}</span>
                         </div>
-
-                        <p class="mt-5 max-w-3xl leading-8 text-slate-300">
-                            {{ $experience->description }}
-                        </p>
-                    </div>
-                @empty
-                    <div class="rounded-[2rem] border border-dashed border-white/15 p-6 text-slate-400">
-                        Tambahkan pengalaman kerja dari CMS.
-                    </div>
-                @endforelse
+                    @endforeach
+                </div>
             </div>
-        </div>
 
-        {{-- SKILLS + APPROACH --}}
-        <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500">
-                Skills
-            </p>
-
-            <div class="mt-6 rounded-[2rem] border border-white/10 bg-white/5 p-6 backdrop-blur">
-                <div class="flex flex-wrap gap-3">
-                    @forelse ($skills as $skill)
-                        <span class="rounded-full border border-white/10 bg-slate-950/60 px-4 py-2 text-sm text-slate-200">
-                            {{ $skill->name }}
-                        </span>
+            {{-- Tags --}}
+            <div class="rounded-2xl border border-white/10 bg-white/4 p-5">
+                <p class="text-xs uppercase tracking-widest text-slate-600 mb-4">Technologies</p>
+                <div class="flex flex-wrap gap-2">
+                    @forelse ($skills->take(12) as $skill)
+                        <span class="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-slate-300">{{ $skill->name }}</span>
                     @empty
-                        <p class="text-slate-400">Tambahkan skills dari CMS.</p>
+                        <span class="text-slate-500 text-sm">Tambahkan skills dari CMS.</span>
                     @endforelse
                 </div>
             </div>
-
-            <div class="mt-6 rounded-[2rem] border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-6">
-                <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500">
-                    Approach
-                </p>
-
-                <h3 class="mt-4 text-2xl font-semibold text-white">
-                    Structured thinking. Practical solutions. Reliable systems.
-                </h3>
-
-                <p class="mt-4 leading-8 text-slate-300">
-                    Saya terbiasa menangani kebutuhan teknis dari sisi support, jaringan, hingga pengembangan aplikasi. Fokus saya adalah membuat sistem yang stabil, mudah dipahami, dan siap digunakan dalam operasional kerja.
-                </p>
-            </div>
         </div>
-
     </div>
 </section>
 
-{{-- EDUCATION + RESUME --}}
-<section class="mx-auto max-w-7xl px-6 pb-20 lg:px-8">
-    <div class="grid gap-8 lg:grid-cols-[1fr_1fr]">
+{{-- ═══════════════════════════════════════════════════
+     EXPERIENCE TIMELINE
+═══════════════════════════════════════════════════ --}}
+<section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 border-t border-white/6">
+    <p class="text-xs font-semibold uppercase tracking-widest text-violet-400 mb-3">Career</p>
+    <h2 class="font-display text-3xl font-bold tracking-tight text-white mb-10">Pengalaman Kerja</h2>
 
-        {{-- EDUCATION --}}
-        <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500">
-                Education
-            </p>
+    <div class="relative">
+        {{-- Timeline line --}}
+        <div class="absolute left-0 top-2 bottom-2 w-px bg-gradient-to-b from-cyan-500/50 via-violet-500/30 to-transparent hidden lg:block" style="left: 11px;"></div>
 
-            <h2 class="mt-4 text-4xl font-semibold tracking-tight text-white">
-                Academic background
-            </h2>
+        <div class="space-y-6">
+            @forelse ($experiences as $experience)
+                @php
+                    $startDate = $experience->start_date ? Carbon::parse($experience->start_date)->format('M Y') : null;
+                    $endDate = $experience->end_date ? Carbon::parse($experience->end_date)->format('M Y') : null;
+                @endphp
+                <div class="relative lg:pl-10">
+                    {{-- Dot --}}
+                    <div class="absolute left-0 top-5 hidden lg:flex h-5 w-5 items-center justify-center rounded-full border-2 border-cyan-500/50 bg-[#030712]" style="left: 3px;">
+                        <div class="h-2 w-2 rounded-full bg-cyan-400"></div>
+                    </div>
 
-            <div class="mt-8 space-y-5">
-                <div class="rounded-[2rem] border border-white/10 bg-white/5 p-6 backdrop-blur">
-                    <h3 class="text-xl font-semibold text-white">
-                        Universitas Pelita Bangsa
-                    </h3>
-                    <p class="mt-2 text-sm text-slate-400">
-                        S1 Teknik Informatika • 2021 – 2025
-                    </p>
-                    <p class="mt-3 text-sm text-slate-300">
-                        IPK: 3.52
-                    </p>
+                    <div class="card-hover rounded-2xl border border-white/10 bg-white/3 p-6 backdrop-blur-sm">
+                        <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                            <div>
+                                <h3 class="font-display text-xl font-semibold text-white">{{ $experience->position }}</h3>
+                                <p class="mt-1 text-sm font-medium text-cyan-400">{{ $experience->company }}</p>
+                            </div>
+                            <span class="shrink-0 text-sm text-slate-500 sm:text-right">
+                                {{ $startDate ?? '—' }} — {{ $endDate ?? 'Present' }}
+                            </span>
+                        </div>
+                        <p class="mt-4 text-sm leading-7 text-slate-400">{{ $experience->description }}</p>
+                    </div>
                 </div>
-
-                <div class="rounded-[2rem] border border-white/10 bg-white/5 p-6 backdrop-blur">
-                    <h3 class="text-xl font-semibold text-white">
-                        SMK Al-Mufti
-                    </h3>
-                    <p class="mt-2 text-sm text-slate-400">
-                        Teknik Komputer dan Jaringan • 2018 – 2021
-                    </p>
+            @empty
+                <div class="rounded-2xl border border-dashed border-white/10 p-8 text-center text-slate-500">
+                    Tambahkan pengalaman kerja dari CMS.
                 </div>
-            </div>
+            @endforelse
         </div>
-
-        {{-- RESUME --}}
-        <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500">
-                Resume
-            </p>
-
-            <h2 class="mt-4 text-4xl font-semibold tracking-tight text-white">
-                Download CV
-            </h2>
-
-            <p class="mt-5 max-w-md leading-8 text-slate-300">
-                Saya menyediakan dua versi CV yang disesuaikan dengan posisi yang dilamar, yaitu IT Support dan Web Development.
-            </p>
-
-            <div class="mt-8 space-y-5">
-                <div class="rounded-[2rem] border border-white/10 bg-white/5 p-6 backdrop-blur">
-                    <h3 class="text-xl font-semibold text-white">
-                        IT Support CV
-                    </h3>
-
-                    <p class="mt-3 text-sm leading-7 text-slate-300">
-                        Fokus pada troubleshooting, jaringan LAN/WAN, Mikrotik, Linux server, serta dukungan teknis untuk operasional sistem.
-                    </p>
-
-                    <a href="{{ asset('cv/cv-it-support.pdf') }}"
-                       target="_blank"
-                       class="mt-5 inline-flex items-center justify-center rounded-full border border-white/15 px-5 py-2.5 text-sm font-semibold text-white transition hover:border-white/30 hover:bg-white/10">
-                        Download CV
-                    </a>
-                </div>
-
-                <div class="rounded-[2rem] border border-white/10 bg-white/5 p-6 backdrop-blur">
-                    <h3 class="text-xl font-semibold text-white">
-                        Programmer CV
-                    </h3>
-
-                    <p class="mt-3 text-sm leading-7 text-slate-300">
-                        Fokus pada Laravel, database MySQL, integrasi API, deployment aplikasi, dan pengembangan sistem web.
-                    </p>
-
-                    <a href="{{ asset('cv/cv-programmer.pdf') }}"
-                       target="_blank"
-                       class="mt-5 inline-flex items-center justify-center rounded-full border border-white/15 px-5 py-2.5 text-sm font-semibold text-white transition hover:border-white/30 hover:bg-white/10">
-                        Download CV
-                    </a>
-                </div>
-            </div>
-        </div>
-
     </div>
 </section>
+
+{{-- ═══════════════════════════════════════════════════
+     EDUCATION
+═══════════════════════════════════════════════════ --}}
+<section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 border-t border-white/6">
+    <div class="grid gap-16 lg:grid-cols-2">
+
+        {{-- Education --}}
+        <div>
+            <p class="text-xs font-semibold uppercase tracking-widest text-emerald-400 mb-3">Education</p>
+            <h2 class="font-display text-3xl font-bold tracking-tight text-white mb-8">Latar Belakang Akademik</h2>
+
+            <div class="space-y-4">
+                <div class="card-hover rounded-2xl border border-white/10 bg-white/3 p-6">
+                    <div class="flex items-start gap-4">
+                        <div class="h-10 w-10 rounded-xl bg-violet-500/15 border border-violet-500/20 flex items-center justify-center shrink-0">
+                            <span class="text-sm font-bold text-violet-300">UPB</span>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-white">Universitas Pelita Bangsa</h3>
+                            <p class="mt-1 text-sm text-slate-400">S1 Teknik Informatika · 2021 – 2025</p>
+                            <div class="mt-3 inline-flex items-center gap-2 rounded-full bg-emerald-400/10 border border-emerald-400/20 px-3 py-1">
+                                <span class="text-xs font-semibold text-emerald-300">IPK 3.52</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-hover rounded-2xl border border-white/10 bg-white/3 p-6">
+                    <div class="flex items-start gap-4">
+                        <div class="h-10 w-10 rounded-xl bg-cyan-500/15 border border-cyan-500/20 flex items-center justify-center shrink-0">
+                            <span class="text-xs font-bold text-cyan-300">SMK</span>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-white">SMK Al-Mufti</h3>
+                            <p class="mt-1 text-sm text-slate-400">Teknik Komputer dan Jaringan · 2018 – 2021</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Download CV --}}
+        <div>
+            <p class="text-xs font-semibold uppercase tracking-widest text-amber-400 mb-3">Resume</p>
+            <h2 class="font-display text-3xl font-bold tracking-tight text-white mb-3">Download CV</h2>
+            <p class="text-slate-400 mb-8 leading-7">Tersedia dua versi CV yang disesuaikan dengan posisi yang dilamar.</p>
+
+            <div class="space-y-4">
+                <div class="card-hover group rounded-2xl border border-white/10 bg-white/3 p-6">
+                    <div class="flex items-center justify-between gap-4">
+                        <div>
+                            <div class="flex items-center gap-2 mb-2">
+                                <div class="h-2 w-2 rounded-full bg-cyan-400"></div>
+                                <span class="text-xs uppercase tracking-widest text-cyan-400 font-semibold">IT Support</span>
+                            </div>
+                            <h3 class="font-semibold text-white">CV IT Support</h3>
+                            <p class="mt-1.5 text-sm text-slate-400">Troubleshooting, jaringan LAN/WAN, Mikrotik, Linux server.</p>
+                        </div>
+                        <a href="{{ asset('cv/cv-it-support.pdf') }}" target="_blank"
+                           class="shrink-0 rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-semibold text-white transition-all hover:bg-white/10 hover:border-white/25">
+                            Download
+                        </a>
+                    </div>
+                </div>
+
+                <div class="card-hover group rounded-2xl border border-white/10 bg-white/3 p-6">
+                    <div class="flex items-center justify-between gap-4">
+                        <div>
+                            <div class="flex items-center gap-2 mb-2">
+                                <div class="h-2 w-2 rounded-full bg-violet-400"></div>
+                                <span class="text-xs uppercase tracking-widest text-violet-400 font-semibold">Developer</span>
+                            </div>
+                            <h3 class="font-semibold text-white">CV Programmer</h3>
+                            <p class="mt-1.5 text-sm text-slate-400">Laravel, MySQL, API integration, deployment aplikasi web.</p>
+                        </div>
+                        <a href="{{ asset('cv/cv-programmer.pdf') }}" target="_blank"
+                           class="shrink-0 rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-semibold text-white transition-all hover:bg-white/10 hover:border-white/25">
+                            Download
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 @endsection

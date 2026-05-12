@@ -7,9 +7,6 @@
 @section('content')
 
 <style>
-/* ─── Reset & base ─────────────────────────────────── */
-* { box-sizing: border-box; }
-
 /* ─── Page wrapper ─────────────────────────────────── */
 .pg-projects {
     max-width: 1280px;
@@ -26,63 +23,42 @@
     color: #94a3b8;
     margin-bottom: 44px;
 }
-.pg-bc a {
-    color: #94a3b8;
-    text-decoration: none;
-    transition: color .2s;
-}
+.pg-bc a { color: #94a3b8; text-decoration: none; }
 .pg-bc a:hover { color: #4f46e5; }
 
 /* ─── Page header ──────────────────────────────────── */
-.pg-header {
-    max-width: 600px;
-    margin-bottom: 52px;
-}
+.pg-header { max-width: 600px; margin-bottom: 52px; }
 .pg-header-eyebrow {
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: .1em;
-    color: #6366f1;
-    margin: 0 0 12px;
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .1em; color: #6366f1; margin: 0 0 12px; display: block;
 }
 .pg-header h1 {
-    font-size: clamp(30px, 4.5vw, 48px);
-    font-weight: 800;
-    color: #0f172a;
-    line-height: 1.18;
-    letter-spacing: -.025em;
-    margin: 0 0 16px;
+    font-size: clamp(30px, 4.5vw, 48px); font-weight: 800; color: #0f172a;
+    line-height: 1.18; letter-spacing: -.025em; margin: 0 0 16px;
 }
-.pg-header p {
-    font-size: 16px;
-    color: #64748b;
-    line-height: 1.7;
-    margin: 0;
-}
+.pg-header p { font-size: 16px; color: #64748b; line-height: 1.7; margin: 0; }
 
 /* ─── Grid ─────────────────────────────────────────── */
 .pg-grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: 20px;
-    align-items: start;          /* ← kunci: card tidak stretch ke tinggi baris */
+    align-items: start;
 }
 @media (min-width: 640px)  { .pg-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1024px) { .pg-grid { grid-template-columns: repeat(3, 1fr); } }
 
 /* ─── Card ─────────────────────────────────────────── */
+/* Gunakan display:block bukan flex supaya gambar tidak ke kanan */
 .pc {
+    display: block !important;
     background: #ffffff;
     border: 1.5px solid #e2e8f0;
     border-radius: 18px;
     overflow: hidden;
-    display: flex;
-    flex-direction: column;
     text-decoration: none;
     color: inherit;
     transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
-    /* TIDAK pakai height:100% — card setinggi kontennya saja */
 }
 .pc:hover {
     transform: translateY(-5px);
@@ -90,64 +66,53 @@
     box-shadow: 0 12px 36px rgba(99,102,241,.13), 0 2px 8px rgba(0,0,0,.06);
 }
 
-/* ─── Thumbnail ────────────────────────────────────── */
+/* ─── Thumbnail ─── gambar FULL WIDTH di atas, BUKAN di samping ── */
 .pc-thumb-wrap {
-    position: relative;
+    display: block;
     width: 100%;
-    height: 196px;          /* ← tinggi tetap, semua card sama */
+    height: 196px;
     overflow: hidden;
-    flex-shrink: 0;
     background: #f1f5f9;
+    /* Reset apapun yang bisa bikin inline/float */
+    float: none;
+    clear: both;
 }
 .pc-thumb-wrap img {
+    display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
     transition: transform .45s ease;
 }
 .pc:hover .pc-thumb-wrap img { transform: scale(1.05); }
 
-/* Placeholder kalau tidak ada gambar */
+/* Placeholder */
 .pc-thumb-placeholder {
-    width: 100%;
-    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+    width: 100%;
+    height: 196px;
     padding: 18px 20px;
     background: linear-gradient(140deg, #eef2ff 0%, #f8fafc 55%, #f5f3ff 100%);
+    box-sizing: border-box;
 }
 .pc-thumb-placeholder .pcat {
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: .09em;
-    color: #a5b4fc;
-    margin: 0 0 5px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    display: block; font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .09em; color: #a5b4fc; margin: 0 0 5px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .pc-thumb-placeholder .ptitle {
-    font-size: 17px;
-    font-weight: 800;
-    color: #1e293b;
-    line-height: 1.3;
-    margin: 0;
-    /* Batasi 2 baris */
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    display: block; font-size: 17px; font-weight: 800; color: #1e293b;
+    line-height: 1.3; margin: 0;
+    overflow: hidden; max-height: calc(17px * 1.3 * 2);
 }
 
 /* ─── Body ─────────────────────────────────────────── */
 .pc-body {
+    display: block;
     padding: 18px 20px 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
+    box-sizing: border-box;
 }
 
 /* Meta row */
@@ -160,140 +125,74 @@
     min-height: 22px;
 }
 .pc-cat {
-    font-size: 10.5px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: .08em;
-    color: #94a3b8;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-size: 10.5px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .08em; color: #94a3b8;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .pc-badge {
-    font-size: 9.5px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: .06em;
-    color: #4f46e5;
-    background: #eef2ff;
-    border: 1px solid #c7d2fe;
-    padding: 2px 9px;
-    border-radius: 999px;
-    white-space: nowrap;
-    flex-shrink: 0;
+    font-size: 9.5px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .06em; color: #4f46e5; background: #eef2ff;
+    border: 1px solid #c7d2fe; padding: 2px 9px; border-radius: 999px;
+    white-space: nowrap; flex-shrink: 0;
 }
 
 /* Title */
 .pc-title {
-    font-size: 16px;
-    font-weight: 800;
-    color: #1e293b;
-    line-height: 1.38;
-    margin: 0 0 8px;
-    /* Batasi 2 baris agar semua card sama */
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    display: block; font-size: 16px; font-weight: 800; color: #1e293b;
+    line-height: 1.38; margin: 0 0 8px;
+    overflow: hidden; max-height: calc(16px * 1.38 * 2);
     transition: color .2s;
 }
 .pc:hover .pc-title { color: #4f46e5; }
 
-/* Description — fix 3 baris */
+/* Desc */
 .pc-desc {
-    font-size: 13px;
-    color: #64748b;
-    line-height: 1.62;
+    display: block; font-size: 13px; color: #64748b; line-height: 1.62;
     margin: 0 0 14px;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
     overflow: hidden;
-    /* Tinggi tetap = 3 baris × line-height */
+    /* Selalu 3 baris */
+    height: calc(13px * 1.62 * 3);
     min-height: calc(13px * 1.62 * 3);
 }
 
 /* Tech tags */
 .pc-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-    margin-bottom: 16px;
-    min-height: 24px;    /* placeholder space kalau tidak ada tags */
+    display: flex; flex-wrap: wrap; gap: 5px;
+    margin-bottom: 14px; min-height: 24px;
 }
 .pc-tag {
-    font-size: 10.5px;
-    font-weight: 600;
-    color: #64748b;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    padding: 3px 8px;
-    border-radius: 6px;
-    white-space: nowrap;
+    font-size: 10.5px; font-weight: 600; color: #64748b;
+    background: #f8fafc; border: 1px solid #e2e8f0;
+    padding: 3px 8px; border-radius: 6px; white-space: nowrap;
 }
 
 /* Footer */
 .pc-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    padding-top: 14px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 8px; padding-top: 14px;
     border-top: 1px solid #f1f5f9;
-    margin-top: auto;
 }
 .pc-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 12.5px;
-    font-weight: 700;
-    color: #6366f1;
-    white-space: nowrap;
-    transition: gap .2s, color .2s;
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 12.5px; font-weight: 700; color: #6366f1; white-space: nowrap;
 }
-.pc:hover .pc-cta { color: #4338ca; gap: 7px; }
-
-.pc-links {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
+.pc:hover .pc-cta { color: #4338ca; }
+.pc-links { display: flex; align-items: center; gap: 5px; }
 .pc-link {
-    font-size: 10.5px;
-    font-weight: 600;
-    color: #94a3b8;
-    border: 1px solid #e2e8f0;
-    border-radius: 7px;
-    padding: 3px 9px;
-    background: #fff;
-    text-decoration: none;
-    transition: all .18s;
-    white-space: nowrap;
+    font-size: 10.5px; font-weight: 600; color: #94a3b8;
+    border: 1px solid #e2e8f0; border-radius: 7px; padding: 3px 9px;
+    background: #fff; text-decoration: none;
 }
-.pc-link:hover {
-    color: #4f46e5;
-    border-color: #c7d2fe;
-    background: #eef2ff;
-}
+.pc-link:hover { color: #4f46e5; border-color: #c7d2fe; background: #eef2ff; }
 
-/* ─── Empty state ──────────────────────────────────── */
+/* ─── Empty ─────────────────────────────────────────── */
 .pg-empty {
-    grid-column: 1 / -1;
-    background: #fff;
-    border: 2px dashed #e2e8f0;
-    border-radius: 18px;
-    padding: 72px 32px;
-    text-align: center;
+    grid-column: 1 / -1; background: #fff; border: 2px dashed #e2e8f0;
+    border-radius: 18px; padding: 72px 32px; text-align: center;
 }
 .pg-empty-icon {
-    width: 52px; height: 52px;
-    background: #f8fafc;
-    border: 1.5px solid #e2e8f0;
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 52px; height: 52px; background: #f8fafc; border: 1.5px solid #e2e8f0;
+    border-radius: 14px; display: flex; align-items: center; justify-content: center;
     margin: 0 auto 14px;
 }
 </style>

@@ -287,42 +287,4 @@
     </div>
 </section>
 
-{{-- ══════════════════════════════════════════════
-     CTA BOTTOM
-══════════════════════════════════════════════ --}}
-<section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20">
-    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-600 via-indigo-700 to-violet-700 p-12 text-center shadow-2xl shadow-indigo-200">
-        <div class="absolute -top-20 -right-20 h-64 w-64 rounded-full bg-white/5 pointer-events-none"></div>
-        <div class="absolute -bottom-16 -left-16 h-56 w-56 rounded-full bg-white/5 pointer-events-none"></div>
-
-        <div class="relative">
-            <span class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 mb-6">
-                <span class="h-1.5 w-1.5 rounded-full bg-emerald-300 animate-pulse"></span>
-                <span class="text-xs font-semibold text-white/90">Aktif mencari peluang kerja</span>
-            </span>
-
-            <h2 class="font-display text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
-                Tertarik merekrut saya?
-            </h2>
-            <p class="mt-4 text-indigo-200 max-w-xl mx-auto leading-8">
-                Saya membuka diri untuk posisi IT Support maupun Web Developer. Silakan lihat CV saya atau hubungi langsung untuk diskusi lebih lanjut.
-            </p>
-
-            <div class="mt-8 flex flex-wrap gap-4 justify-center">
-                <a href="{{ route('about') }}"
-                   class="inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-bold text-indigo-700 transition-all hover:bg-indigo-50 hover:-translate-y-0.5 hover:shadow-xl shadow-lg shadow-indigo-900/30">
-                    Lihat CV & Pengalaman
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
-                    </svg>
-                </a>
-                <a href="{{ route('contact') }}"
-                   class="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-7 py-3.5 text-sm font-semibold text-white transition-all hover:bg-white/20 hover:-translate-y-0.5">
-                    Hubungi Saya
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
-
 @endsection

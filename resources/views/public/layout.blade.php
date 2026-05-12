@@ -188,7 +188,7 @@
         {{-- ══════════════ FOOTER ══════════════ --}}
         <footer class="bg-white border-t border-slate-200 mt-20">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
-                <div class="grid gap-10 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
+                <div class="grid gap-10 sm:grid-cols-[1.5fr_1fr_1fr]">
 
                     {{-- Brand --}}
                     <div>
@@ -205,16 +205,6 @@
                             <span class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
                             <span class="text-xs text-emerald-600 font-semibold">Open to Opportunities</span>
                         </div>
-                    </div>
-
-                    {{-- Nav --}}
-                    <div>
-                        <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4">Navigation</p>
-                        <ul class="space-y-3">
-                            @foreach ($navLinks as $link)
-                                <li><a href="{{ route($link['route']) }}" class="text-sm text-slate-500 hover:text-indigo-600 transition-colors">{{ $link['label'] }}</a></li>
-                            @endforeach
-                        </ul>
                     </div>
 
                     {{-- Focus --}}

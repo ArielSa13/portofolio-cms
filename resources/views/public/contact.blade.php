@@ -16,14 +16,14 @@
     <div class="max-w-2xl mb-16">
         <div class="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-2 mb-6">
             <span class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span class="text-xs font-semibold text-emerald-700">Open to new opportunities</span>
+            <span class="text-xs font-semibold text-emerald-700">Aktif mencari pekerjaan</span>
         </div>
-        <p class="text-xs font-bold uppercase tracking-widest text-indigo-500 mb-4">Get In Touch</p>
+        <p class="text-xs font-bold uppercase tracking-widest text-indigo-500 mb-4">Kontak Saya</p>
         <h1 class="font-display text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
-            Tertarik bekerja sama?
+            Mari terhubung
         </h1>
         <p class="mt-5 text-lg leading-8 text-slate-500">
-            Jika Anda sedang mencari IT Support atau Web Developer untuk posisi full-time, freelance, atau project tertentu — saya senang berdiskusi.
+            Jika Anda adalah recruiter atau hiring manager yang mencari IT Support atau Web Developer — saya terbuka untuk berdiskusi mengenai posisi yang tersedia.
         </p>
     </div>
 
@@ -92,11 +92,11 @@
                 <div class="relative">
                     <div class="flex items-center gap-2 mb-4">
                         <span class="h-2 w-2 rounded-full bg-emerald-300 animate-pulse"></span>
-                        <span class="text-xs font-bold text-emerald-200 uppercase tracking-widest">Available</span>
+                        <span class="text-xs font-bold text-emerald-200 uppercase tracking-widest">Open to Work</span>
                     </div>
-                    <h2 class="font-display text-2xl font-bold text-white mb-3">Saya siap untuk peluang baru</h2>
+                    <h2 class="font-display text-2xl font-bold text-white mb-3">Saya sedang mencari pekerjaan</h2>
                     <p class="text-indigo-200 leading-7 text-sm">
-                        {{ $contact->cta_text ?? 'Saat ini saya terbuka untuk posisi IT Support maupun Web Developer. Siap berdiskusi mengenai pengalaman, project, dan kontribusi yang bisa saya berikan.' }}
+                        {{ $contact->cta_text ?? 'Saya terbuka untuk posisi IT Support maupun Web Developer secara full-time. Siap berdiskusi mengenai pengalaman, kemampuan teknis, dan kontribusi yang bisa saya berikan.' }}
                     </p>
 
                     <div class="mt-8 flex flex-wrap gap-3">
@@ -119,12 +119,12 @@
             </div>
 
             <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-5">Tertarik untuk</p>
+                <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-5">Posisi yang saya cari</p>
                 <div class="space-y-3">
                     @foreach([
-                        ['title' => 'Full-time Position', 'desc' => 'IT Support atau Web Developer', 'color' => 'emerald'],
-                        ['title' => 'Freelance Project',  'desc' => 'Laravel web development',       'color' => 'indigo'],
-                        ['title' => 'Internship',         'desc' => 'Pengalaman industri relevan',    'color' => 'violet'],
+                        ['title' => 'IT Support',        'desc' => 'Troubleshooting, jaringan, server Linux',  'color' => 'emerald'],
+                        ['title' => 'Web Developer',      'desc' => 'Laravel, PHP, MySQL, full-stack',          'color' => 'indigo'],
+                        ['title' => 'Fresh Graduate',     'desc' => 'S1 Teknik Informatika, IPK 3.52',          'color' => 'violet'],
                     ] as $item)
                         @php
                             $colors = [

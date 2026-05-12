@@ -145,7 +145,7 @@
                         <a href="{{ route('contact') }}"
                            class="hidden lg:inline-flex items-center gap-2 rounded-full btn-primary px-4 py-2 text-sm font-semibold">
                             <span class="h-1.5 w-1.5 rounded-full bg-emerald-300 animate-pulse"></span>
-                            Hire Me
+                            Hubungi Saya
                         </a>
 
                         <button id="mobile-menu-button" type="button"
@@ -174,7 +174,7 @@
                     <div class="pt-3 pb-1">
                         <a href="{{ route('contact') }}" class="flex items-center justify-center gap-2 rounded-xl btn-primary px-4 py-3 text-sm font-semibold">
                             <span class="h-1.5 w-1.5 rounded-full bg-emerald-300 animate-pulse"></span>
-                            Hire Me
+                            Hubungi Saya
                         </a>
                     </div>
                 </div>
@@ -199,11 +199,11 @@
                             <span class="text-sm font-semibold text-slate-800">{{ $about->name ?? 'Portfolio' }}</span>
                         </div>
                         <p class="text-sm leading-7 text-slate-500 max-w-xs">
-                            IT Support & Laravel Developer yang berfokus pada sistem yang stabil, maintainable, dan siap pakai.
+                            IT Support & Laravel Developer dengan pengalaman di bidang sistem, jaringan, dan pengembangan aplikasi web.
                         </p>
                         <div class="mt-5 flex items-center gap-2">
                             <span class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                            <span class="text-xs text-emerald-600 font-semibold">Available for work</span>
+                            <span class="text-xs text-emerald-600 font-semibold">Open to Opportunities</span>
                         </div>
                     </div>
 
@@ -247,8 +247,8 @@
                 </div>
 
                 <div class="mt-12 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <p class="text-xs text-slate-400">© {{ date('Y') }} {{ $about->name ?? config('app.name') }}. Built with Laravel.</p>
-                    <p class="text-xs text-slate-400">Ready for work · Open to opportunities</p>
+                    <p class="text-xs text-slate-400">© {{ date('Y') }} {{ $about->name ?? config('app.name') }}. Portfolio.</p>
+                    <p class="text-xs text-slate-400">IT Support · Laravel Developer · Open to Work</p>
                 </div>
             </div>
         </footer>

@@ -2,7 +2,33 @@
 
 @php use Illuminate\Support\Str; @endphp
 
-@section('title', $project->title . ' — ' . ($about->name ?? 'Portfolio'))
+@section('seo_title', $project->title)
+@section('seo_subtitle', ($project->category ?: 'Project') . ' — ' . ($about->name ?? 'Muhamad Ariel Saputra'))
+@section('seo_description', Str::limit($project->description ?? 'Project oleh ' . ($about->name ?? 'Muhamad Ariel Saputra') . ' — IT Support & Laravel Developer.', 155))
+@section('seo_keywords', $project->title . ', ' . ($project->tech_stack ?? 'Laravel, PHP') . ', portfolio project ' . ($about->name ?? 'Muhamad Ariel Saputra'))
+@section('og_type', 'article')
+@section('og_title', $project->title . ' | Portfolio ' . ($about->name ?? 'Muhamad Ariel Saputra'))
+@section('og_description', Str::limit($project->description ?? '', 155))
+@section('og_image', $project->cover_image ? asset($project->cover_image) : ($about->photo ? asset($about->photo) : ''))
+
+@section('structured_data')
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    "name": "{{ $project->title }}",
+    "description": "{{ Str::limit($project->description ?? '', 200) }}",
+    "url": "{{ url()->current() }}",
+    "author": {
+        "@type": "Person",
+        "name": "{{ $about->name ?? 'Muhamad Ariel Saputra' }}",
+        "url": "{{ url('/') }}"
+    },
+    "keywords": "{{ $project->tech_stack }}",
+    "datePublished": "{{ optional($project->published_at)->toIso8601String() }}"
+}
+</script>
+@endsection
 
 @section('content')
 

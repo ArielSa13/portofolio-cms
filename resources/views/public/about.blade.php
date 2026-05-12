@@ -18,7 +18,12 @@
     }
 @endphp
 
-@section('title', 'About — ' . ($about->name ?? 'Portfolio'))
+@section('seo_title', $about->name ?? 'Muhamad Ariel Saputra')
+@section('seo_subtitle', 'About — IT Support & Laravel Developer')
+@section('seo_description', 'Tentang ' . ($about->name ?? 'Muhamad Ariel Saputra') . ' — IT Support & Laravel Developer. Lulusan S1 Teknik Informatika Universitas Pelita Bangsa, berpengalaman di troubleshooting, jaringan LAN/WAN, Linux server, dan Laravel.')
+@section('seo_keywords', ($about->name ?? 'Muhamad Ariel Saputra') . ', profil IT support, tentang Ariel Saputra, Universitas Pelita Bangsa, Teknik Informatika')
+@section('og_title', 'About ' . ($about->name ?? 'Muhamad Ariel Saputra') . ' | IT Support & Developer')
+@section('og_description', ($about->short_bio ?? 'IT Support & Laravel Developer berpengalaman. Lulusan S1 Teknik Informatika. Open to Work.'))
 
 @section('content')
 

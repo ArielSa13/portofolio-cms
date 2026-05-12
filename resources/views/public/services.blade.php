@@ -1,6 +1,9 @@
 @extends('public.layout')
 
-@section('title', 'Focus Areas — ' . ($about->name ?? 'Portfolio'))
+@section('seo_title', $about->name ?? 'Muhamad Ariel Saputra')
+@section('seo_subtitle', 'Focus Areas — IT Support & Laravel Developer')
+@section('seo_description', 'Area keahlian ' . ($about->name ?? 'Muhamad Ariel Saputra') . ' — IT Support, Web Development, Linux Server Management, dan jaringan LAN/WAN.')
+@section('seo_keywords', ($about->name ?? 'Muhamad Ariel Saputra') . ', focus area IT support, layanan web development, jaringan komputer')
 
 @section('content')
 <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 pb-24">

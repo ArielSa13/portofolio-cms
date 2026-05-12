@@ -1,6 +1,11 @@
 @extends('public.layout')
 
-@section('title', 'Contact — ' . ($about->name ?? 'Portfolio'))
+@section('seo_title', $about->name ?? 'Muhamad Ariel Saputra')
+@section('seo_subtitle', 'Kontak — IT Support & Laravel Developer')
+@section('seo_description', 'Hubungi ' . ($about->name ?? 'Muhamad Ariel Saputra') . ' — IT Support & Laravel Developer yang sedang aktif mencari kerja. Tersedia untuk posisi full-time di bidang IT Support maupun Web Developer.')
+@section('seo_keywords', ($about->name ?? 'Muhamad Ariel Saputra') . ', kontak IT support, hire Laravel developer, rekrut web developer Indonesia')
+@section('og_title', 'Hubungi ' . ($about->name ?? 'Muhamad Ariel Saputra') . ' | Open to Work')
+@section('og_description', ($about->name ?? 'Muhamad Ariel Saputra') . ' sedang aktif mencari posisi IT Support atau Web Developer. Hubungi sekarang.')
 
 @section('content')
 

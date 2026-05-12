@@ -3,7 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', config('app.name', 'Portfolio'))</title>
+
+    {{-- ═══ SEO: Basic ═══ --}}
+    <title>@yield('seo_title', $about->name ?? 'Portfolio') — @yield('seo_subtitle', 'IT Support & Laravel Developer')</title>
+    <meta name="description" content="@yield('seo_description', 'Portfolio ' . ($about->name ?? 'Muhamad Ariel Saputra') . ' — IT Support & Laravel Developer berpengalaman di bidang sistem, jaringan, dan pengembangan aplikasi web berbasis Laravel. Tersedia untuk posisi full-time.')">
+    <meta name="keywords" content="@yield('seo_keywords', ($about->name ?? 'Muhamad Ariel Saputra') . ', IT Support, Laravel Developer, Web Developer, PHP Developer, Linux, Networking, Portfolio')">
+    <meta name="author" content="{{ $about->name ?? 'Muhamad Ariel Saputra' }}">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{ url()->current() }}">
+
+    {{-- ═══ SEO: Open Graph (Facebook, WhatsApp, LinkedIn) ═══ --}}
+    <meta property="og:type" content="@yield('og_type', 'website')">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:site_name" content="{{ $about->name ?? config('app.name') }}">
+    <meta property="og:title" content="@yield('og_title', ($about->name ?? 'Muhamad Ariel Saputra') . ' — IT Support & Laravel Developer')">
+    <meta property="og:description" content="@yield('og_description', 'Portfolio ' . ($about->name ?? 'Muhamad Ariel Saputra') . ' — IT Support & Laravel Developer berpengalaman. Open to Work.')">
+    <meta property="og:image" content="@yield('og_image', $about->photo ? asset($about->photo) : asset('images/og-default.jpg'))">
+    <meta property="og:locale" content="id_ID">
+
+    {{-- ═══ SEO: Twitter Card ═══ --}}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="@yield('og_title', ($about->name ?? 'Muhamad Ariel Saputra') . ' — IT Support & Laravel Developer')">
+    <meta name="twitter:description" content="@yield('og_description', 'Portfolio ' . ($about->name ?? 'Muhamad Ariel Saputra') . ' — IT Support & Laravel Developer berpengalaman. Open to Work.')">
+    <meta name="twitter:image" content="@yield('og_image', $about->photo ? asset($about->photo) : asset('images/og-default.jpg'))">
+
+    {{-- ═══ SEO: JSON-LD Structured Data (Person) ═══ --}}
+    @yield('structured_data')
+    @if(request()->routeIs('home') || !request()->routeIs('projects.show'))
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "{{ $about->name ?? 'Muhamad Ariel Saputra' }}",
+        "jobTitle": "{{ $about->headline ?? 'IT Support & Laravel Developer' }}",
+        "description": "{{ $about->short_bio ?? 'IT Support dan Laravel Developer berpengalaman di bidang sistem, jaringan, dan pengembangan aplikasi web.' }}",
+        "url": "{{ url('/') }}",
+        "email": "{{ $about->email ?? '' }}",
+        "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "ID",
+            "addressLocality": "{{ $about->location ?? 'Indonesia' }}"
+        },
+        "sameAs": [
+            {{ $about->linkedin ? '"' . $about->linkedin . '",' : '' }}
+            {{ $about->github   ? '"' . $about->github   . '",' : '' }}
+            {{ $about->instagram? '"' . $about->instagram . '"' : '""' }}
+        ],
+        "knowsAbout": ["IT Support", "Laravel", "PHP", "MySQL", "Linux", "Networking", "Web Development"],
+        "alumniOf": {
+            "@type": "CollegeOrUniversity",
+            "name": "Universitas Pelita Bangsa"
+        }
+    }
+    </script>
+    @endif
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {

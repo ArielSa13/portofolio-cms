@@ -2,7 +2,12 @@
 
 @php use Illuminate\Support\Str; @endphp
 
-@section('title', 'Projects — ' . ($about->name ?? 'Portfolio'))
+@section('seo_title', $about->name ?? 'Muhamad Ariel Saputra')
+@section('seo_subtitle', 'Projects — Portfolio')
+@section('seo_description', 'Kumpulan project ' . ($about->name ?? 'Muhamad Ariel Saputra') . ' — aplikasi web Laravel, sistem informasi, dan project IT yang menunjukkan kemampuan teknis sebagai Web Developer.')
+@section('seo_keywords', ($about->name ?? 'Muhamad Ariel Saputra') . ', project Laravel, portfolio web developer, project IT support')
+@section('og_title', 'Projects Portfolio — ' . ($about->name ?? 'Muhamad Ariel Saputra'))
+@section('og_description', 'Lihat kumpulan project web development dan IT dari ' . ($about->name ?? 'Muhamad Ariel Saputra') . '.')
 
 @section('content')
 

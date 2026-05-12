@@ -1,6 +1,9 @@
 @extends('public.layout')
 
-@section('title', 'Experience — ' . ($about->name ?? 'Portfolio'))
+@section('seo_title', $about->name ?? 'Muhamad Ariel Saputra')
+@section('seo_subtitle', 'Pengalaman Kerja — IT Support & Laravel Developer')
+@section('seo_description', 'Riwayat pengalaman kerja ' . ($about->name ?? 'Muhamad Ariel Saputra') . ' sebagai IT Support dan Web Developer. Lihat track record dan pencapaian profesional.')
+@section('seo_keywords', ($about->name ?? 'Muhamad Ariel Saputra') . ', pengalaman kerja IT support, riwayat kerja web developer')
 
 @section('content')
 <section class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pt-20 pb-24">

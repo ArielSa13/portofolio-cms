@@ -1,6 +1,9 @@
 @extends('public.layout')
 
-@section('title', 'Skills — ' . ($about->name ?? 'Portfolio'))
+@section('seo_title', $about->name ?? 'Muhamad Ariel Saputra')
+@section('seo_subtitle', 'Skills & Teknologi')
+@section('seo_description', 'Skills dan teknologi yang dikuasai ' . ($about->name ?? 'Muhamad Ariel Saputra') . ' — Laravel, PHP, MySQL, Linux, Networking, dan tools lainnya.')
+@section('seo_keywords', ($about->name ?? 'Muhamad Ariel Saputra') . ', skills Laravel, PHP developer, Linux server, MySQL, IT support skills')
 
 @section('content')
 <section class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pt-20 pb-24">

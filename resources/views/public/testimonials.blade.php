@@ -1,6 +1,9 @@
 @extends('public.layout')
 
-@section('title', 'Testimonials — ' . ($about->name ?? 'Portfolio'))
+@section('seo_title', $about->name ?? 'Muhamad Ariel Saputra')
+@section('seo_subtitle', 'Testimonials — Portfolio')
+@section('seo_description', 'Testimoni dan feedback tentang cara kerja ' . ($about->name ?? 'Muhamad Ariel Saputra') . ' — IT Support & Laravel Developer yang profesional.')
+@section('seo_keywords', ($about->name ?? 'Muhamad Ariel Saputra') . ', testimoni IT support, review web developer, feedback Laravel developer')
 
 @section('content')
 <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-20 pb-24">

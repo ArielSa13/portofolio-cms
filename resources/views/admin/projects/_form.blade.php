@@ -52,6 +52,50 @@
         @endif
     </div>
 
+    {{-- Gallery --}}
+    <div class="md:col-span-2">
+        <label class="block text-sm font-semibold text-slate-700 mb-1">
+            Gallery Foto
+            <span class="ml-1.5 text-xs font-normal text-slate-400">(bisa pilih beberapa sekaligus)</span>
+        </label>
+
+        {{-- Existing gallery photos --}}
+        @if ($project->gallery_list)
+            <div class="mb-3">
+                <p class="text-xs text-slate-500 mb-2">Foto saat ini — centang untuk hapus:</p>
+                <div class="flex flex-wrap gap-3">
+                    @foreach ($project->gallery_list as $i => $photo)
+                        <div class="relative group">
+                            <img src="{{ asset($photo) }}" alt="gallery {{ $i + 1 }}"
+                                 class="h-24 w-32 rounded-xl border border-slate-200 object-cover shadow-sm">
+                            {{-- Hidden input to keep this photo --}}
+                            <input type="hidden" name="gallery_keep[]" value="{{ $photo }}" id="keep_{{ $i }}">
+                            {{-- Checkbox to delete --}}
+                            <label class="absolute top-1 right-1 cursor-pointer">
+                                <input type="checkbox" id="del_{{ $i }}" class="gallery-delete-cb sr-only"
+                                       onchange="toggleDelete(this, {{ $i }})">
+                                <span class="flex h-6 w-6 items-center justify-center rounded-full bg-white/90 border border-slate-300 shadow text-slate-400 group-hover:border-rose-400 transition-colors" id="del_icon_{{ $i }}">
+                                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                                    </svg>
+                                </span>
+                            </label>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @endif
+
+        {{-- Upload new photos --}}
+        <input type="file" name="gallery[]" accept="image/*" multiple
+               id="galleryInput"
+               class="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-600 file:mr-3 file:rounded-lg file:border-0 file:bg-violet-50 file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-violet-600 hover:file:bg-violet-100">
+        <p class="mt-1.5 text-xs text-slate-400">Format: JPG, PNG, WebP. Maks 4MB per foto.</p>
+
+        {{-- Preview foto baru sebelum upload --}}
+        <div id="galleryPreview" class="mt-3 flex flex-wrap gap-3 hidden"></div>
+    </div>
+
     {{-- Tech Stack --}}
     <div>
         <label class="block text-sm font-semibold text-slate-700 mb-1.5">Tech Stack</label>
@@ -126,3 +170,41 @@
         Batal
     </a>
 </div>
+
+<script>
+// Preview foto baru sebelum upload
+document.getElementById('galleryInput')?.addEventListener('change', function () {
+    const preview = document.getElementById('galleryPreview');
+    preview.innerHTML = '';
+    if (this.files.length === 0) { preview.classList.add('hidden'); return; }
+    preview.classList.remove('hidden');
+    Array.from(this.files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = e => {
+            const wrap = document.createElement('div');
+            wrap.className = 'relative';
+            wrap.innerHTML = `<img src="${e.target.result}" class="h-24 w-32 rounded-xl border border-violet-200 object-cover shadow-sm">
+                <span class="absolute top-1 left-1 rounded-full bg-violet-500 px-2 py-0.5 text-[10px] font-bold text-white">Baru</span>`;
+            preview.appendChild(wrap);
+        };
+        reader.readAsDataURL(file);
+    });
+});
+
+// Toggle hapus foto existing
+function toggleDelete(cb, i) {
+    const keepInput = document.getElementById('keep_' + i);
+    const icon = document.getElementById('del_icon_' + i);
+    if (cb.checked) {
+        keepInput.disabled = true;
+        icon.style.background = '#fee2e2';
+        icon.style.borderColor = '#f87171';
+        icon.style.color = '#ef4444';
+    } else {
+        keepInput.disabled = false;
+        icon.style.background = '';
+        icon.style.borderColor = '';
+        icon.style.color = '';
+    }
+}
+</script>

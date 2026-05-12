@@ -66,6 +66,68 @@
         background:linear-gradient(135deg,#eef2ff 0%,#f8fafc 50%,#f5f3ff 100%);
     }
 
+    /* Gallery */
+    .ps-gallery { margin-top:40px; }
+    .ps-gallery-title { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.09em; color:#94a3b8; margin:0 0 14px; }
+    .ps-gallery-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+    @media(min-width:640px){ .ps-gallery-grid { grid-template-columns:repeat(3,1fr); } }
+    @media(min-width:1024px){ .ps-gallery-grid { grid-template-columns:repeat(4,1fr); } }
+    .ps-gallery-thumb {
+        position:relative; border-radius:12px; overflow:hidden;
+        background:#f1f5f9; cursor:pointer;
+        border:1px solid #e2e8f0;
+        aspect-ratio:4/3;
+    }
+    .ps-gallery-thumb img {
+        width:100%; height:100%; object-fit:cover; display:block;
+        transition:transform .35s ease;
+    }
+    .ps-gallery-thumb:hover img { transform:scale(1.06); }
+    .ps-gallery-thumb .ps-gallery-overlay {
+        position:absolute; inset:0; background:rgba(79,70,229,0);
+        display:flex; align-items:center; justify-content:center;
+        transition:background .25s ease;
+    }
+    .ps-gallery-thumb:hover .ps-gallery-overlay { background:rgba(79,70,229,0.18); }
+    .ps-gallery-thumb .ps-gallery-overlay svg { opacity:0; transform:scale(0.8); transition:all .25s ease; }
+    .ps-gallery-thumb:hover .ps-gallery-overlay svg { opacity:1; transform:scale(1); }
+
+    /* Lightbox */
+    #ps-lightbox {
+        display:none; position:fixed; inset:0; z-index:9999;
+        background:rgba(2,6,23,0.95); backdrop-filter:blur(8px);
+        align-items:center; justify-content:center;
+    }
+    #ps-lightbox.active { display:flex; }
+    #ps-lightbox-img {
+        max-width:90vw; max-height:88vh;
+        border-radius:12px; box-shadow:0 24px 60px rgba(0,0,0,0.6);
+        object-fit:contain; display:block;
+    }
+    .ps-lb-close {
+        position:fixed; top:20px; right:24px;
+        width:40px; height:40px; border-radius:50%;
+        background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2);
+        color:#fff; cursor:pointer; display:flex; align-items:center; justify-content:center;
+        transition:background .2s;
+    }
+    .ps-lb-close:hover { background:rgba(255,255,255,0.2); }
+    .ps-lb-arrow {
+        position:fixed; top:50%; transform:translateY(-50%);
+        width:44px; height:44px; border-radius:50%;
+        background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2);
+        color:#fff; cursor:pointer; display:flex; align-items:center; justify-content:center;
+        transition:background .2s; user-select:none;
+    }
+    .ps-lb-arrow:hover { background:rgba(255,255,255,0.2); }
+    .ps-lb-prev { left:20px; }
+    .ps-lb-next { right:20px; }
+    .ps-lb-counter {
+        position:fixed; bottom:20px; left:50%; transform:translateX(-50%);
+        font-size:12px; color:rgba(255,255,255,0.5); font-weight:600;
+        letter-spacing:.05em;
+    }
+
     /* Content area */
     .ps-content-grid { display:grid; gap:24px; margin-top:40px; }
     @media(min-width:1024px){ .ps-content-grid { grid-template-columns: 1fr 260px; } }
@@ -200,6 +262,26 @@
         @endif
     </div>
 
+    {{-- Gallery --}}
+    @php $galleryPhotos = $project->gallery_list; @endphp
+    @if (count($galleryPhotos) > 0)
+        <div class="ps-gallery">
+            <p class="ps-gallery-title">Gallery — {{ count($galleryPhotos) }} foto</p>
+            <div class="ps-gallery-grid">
+                @foreach ($galleryPhotos as $i => $photo)
+                    <div class="ps-gallery-thumb" onclick="openLightbox({{ $i }})">
+                        <img src="{{ asset($photo) }}" alt="Gallery {{ $i + 1 }}" loading="lazy">
+                        <div class="ps-gallery-overlay">
+                            <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607zM10.5 7.5v6m3-3h-6"/>
+                            </svg>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    @endif
+
     {{-- Content --}}
     <div class="ps-content-grid">
         <article class="ps-article">
@@ -252,6 +334,67 @@
         @endforeach
     </div>
 </div>
+@endif
+
+{{-- Lightbox --}}
+@if (count($project->gallery_list) > 0)
+<div id="ps-lightbox" onclick="closeLightboxOnBg(event)">
+    <button class="ps-lb-close" onclick="closeLightbox()" aria-label="Tutup">
+        <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+    </button>
+    <button class="ps-lb-arrow ps-lb-prev" onclick="moveLightbox(-1)" aria-label="Sebelumnya">
+        <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/>
+        </svg>
+    </button>
+    <img id="ps-lightbox-img" src="" alt="Gallery">
+    <button class="ps-lb-arrow ps-lb-next" onclick="moveLightbox(1)" aria-label="Berikutnya">
+        <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/>
+        </svg>
+    </button>
+    <div class="ps-lb-counter" id="ps-lb-counter"></div>
+</div>
+
+<script>
+const galleryImages = @json(array_map(fn($p) => asset($p), $project->gallery_list));
+let currentIndex = 0;
+
+function openLightbox(index) {
+    currentIndex = index;
+    document.getElementById('ps-lightbox').classList.add('active');
+    document.body.style.overflow = 'hidden';
+    updateLightbox();
+}
+
+function closeLightbox() {
+    document.getElementById('ps-lightbox').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function closeLightboxOnBg(e) {
+    if (e.target.id === 'ps-lightbox') closeLightbox();
+}
+
+function moveLightbox(dir) {
+    currentIndex = (currentIndex + dir + galleryImages.length) % galleryImages.length;
+    updateLightbox();
+}
+
+function updateLightbox() {
+    document.getElementById('ps-lightbox-img').src = galleryImages[currentIndex];
+    document.getElementById('ps-lb-counter').textContent = (currentIndex + 1) + ' / ' + galleryImages.length;
+}
+
+document.addEventListener('keydown', function(e) {
+    if (!document.getElementById('ps-lightbox').classList.contains('active')) return;
+    if (e.key === 'ArrowLeft')  moveLightbox(-1);
+    if (e.key === 'ArrowRight') moveLightbox(1);
+    if (e.key === 'Escape')     closeLightbox();
+});
+</script>
 @endif
 
 @endsection

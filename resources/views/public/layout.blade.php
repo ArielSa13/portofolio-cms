@@ -237,7 +237,7 @@
 
                 <div class="mt-12 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
                     <p class="text-xs text-slate-400">© {{ date('Y') }} {{ $about->name ?? config('app.name') }}. Built with Laravel.</p>
-                    <p class="text-xs text-slate-300">Ready for work · Open to opportunities</p>
+                    <p class="text-xs text-slate-400">Ready for work · Open to opportunities</p>
                 </div>
             </div>
         </footer>
